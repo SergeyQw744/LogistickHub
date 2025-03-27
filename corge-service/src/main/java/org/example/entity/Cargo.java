@@ -1,6 +1,10 @@
 package org.example.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.Size;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -16,21 +20,33 @@ public class Cargo {
     private Long id;
 
     @Column(name = "cargo_name")
+    @NotNull
+    @NotEmpty
+    @Size(min = 2, max = 3000)
     private String cargoName;  //0
 
     @Column(name = "reg_number", unique = true)
+    @NotNull
+    @NotEmpty
+    @Size(min = 9, max = 9)
     private String registrationNumber; //1
 
     @Column(name = "weight")
+    @NotNull
+    @NotEmpty
+    @Positive
     private double weight; //2
 
     @Column(name = "unit_of_weight")
-    private String unitOfWeight; //3
+    @Enumerated(EnumType.STRING)
+    private UnitOfWeight unitOfWeight; //3
 
     @Column(name = "status")
+    @Enumerated(EnumType.STRING)
     private CargoStatus cargoStatus;
 
     @Column(name = "path")
+    @Size(min = 9, max = 9)
     private String pathIdentifier; //4
 
     @Column(name = "timestamp")
@@ -42,7 +58,7 @@ public class Cargo {
 
     public Cargo(){}
 
-    public Cargo(String cargoName, String registrationNumber, double weight, String unitOfWeight, String pathIdentifier) {
+    public Cargo(String cargoName, String registrationNumber, double weight, UnitOfWeight unitOfWeight, String pathIdentifier) {
         this.cargoName = cargoName;
         this.registrationNumber = registrationNumber;
         this.weight = weight;
@@ -82,14 +98,6 @@ public class Cargo {
         this.weight = weight;
     }
 
-    public String getUnitOfWeight() {
-        return unitOfWeight;
-    }
-
-    public void setUnitOfWeight(String unitOfWeight) {
-        this.unitOfWeight = unitOfWeight;
-    }
-
     public CargoStatus getCargoStatus() {
         return cargoStatus;
     }
@@ -120,5 +128,13 @@ public class Cargo {
 
     public void setComments(List<Comment> comments) {
         this.comments = comments;
+    }
+
+    public UnitOfWeight getUnitOfWeight() {
+        return unitOfWeight;
+    }
+
+    public void setUnitOfWeight(UnitOfWeight unitOfWeight) {
+        this.unitOfWeight = unitOfWeight;
     }
 }

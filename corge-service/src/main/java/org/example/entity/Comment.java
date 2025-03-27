@@ -1,6 +1,9 @@
 package org.example.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 
 import java.util.Date;
 
@@ -14,9 +17,13 @@ public class Comment {
     private Long id;
 
     @Column(name = "text")
+    @NotNull
+    @NotEmpty
+    @Size(min = 1, max = 2000)
     private String text;
 
     @Column(name = "timestamp")
+    @Temporal(TemporalType.TIMESTAMP)
     private Date timestampOfRegistration;
 
     @ManyToOne

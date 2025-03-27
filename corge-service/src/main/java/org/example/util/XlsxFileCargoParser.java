@@ -18,13 +18,13 @@ import java.util.Map;
 public class XlsxFileCargoParser {
 
     private final Map<Integer, String> strategySetFields = Map.of(
-            0, "CargoName",
-            1, "RegistrationNumber",
-            3, "UnitOfWeight",
-            4, "PathIdentifier"
+            0, "setCargoName",
+            1, "setRegistrationNumber",
+            4, "setPathIdentifier"
     );
 
-    public List<Cargo> toListCargo(InputStream inputStream) throws IOException, NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+    public List<Cargo> toListCargo(InputStream inputStream)
+            throws IOException, NoSuchMethodException, InvocationTargetException, IllegalAccessException {
         List<Cargo> cargos = new ArrayList<>();
         HSSFWorkbook workbook = new HSSFWorkbook(inputStream);
         Sheet sheet = workbook.getSheetAt(0);
@@ -42,7 +42,7 @@ public class XlsxFileCargoParser {
                 int cellType = cell.getCellType();
                 switch(cellType){
                     case Cell.CELL_TYPE_STRING:
-                        String setterName = "set" + strategySetFields.get(cellIndex);
+                        String setterName = strategySetFields.get(cellIndex);
                         Method setNameMethod = Cargo.class.getDeclaredMethod(setterName, String.class);
                         setNameMethod.invoke(cargo, cell.getStringCellValue());
                         break;

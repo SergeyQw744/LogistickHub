@@ -4,6 +4,7 @@ import org.example.entity.Cargo;
 import org.example.entity.CargoStatus;
 import org.example.repository.CargoRepository;
 import org.example.service.CargoService;
+import org.example.util.GeneratorRegistrationNumberCargo;
 import org.example.util.XlsxFileCargoParser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,6 +19,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 @Service
 public class CargoServiceImpl implements CargoService {
@@ -56,7 +58,15 @@ public class CargoServiceImpl implements CargoService {
     @Override
     @Transactional
     public Cargo save(Cargo cargo) {
-        return cargoRepository.save(cargo);
+        Cargo cargoSaved = cargoRepository.save(cargo);
+        String generatedRegistrationNumber = GeneratorRegistrationNumberCargo.generate(cargoSaved.getId());
+        Optional<Cargo> cargoOptional = cargoRepository.findByRegistrationNumber(generatedRegistrationNumber);
+        if (cargoOptional.isEmpty() || generatedRegistrationNumber.length() != 9){
+            return cargoSaved;
+        } else {
+            RuntimeException e = new RuntimeException("Cargo not been created, try again!");
+            throw e;
+        }
     }
 
     @Override
@@ -67,6 +77,7 @@ public class CargoServiceImpl implements CargoService {
     }
 
     @Override
+    @Transactional
     public void delete(Long id) {
         cargoRepository.deleteById(id);
     }
