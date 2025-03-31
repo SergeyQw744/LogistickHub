@@ -8,12 +8,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-public class CargoDtoMapper implements DtoMapper<CargoDtoCreate, Cargo> {
+public class CargoDtoCreateMapper implements DtoMapper<CargoDtoCreate, Cargo> {
 
     private final ModelMapper modelMapper;
 
     @Autowired
-    public CargoDtoMapper(ModelMapper modelMapper){
+    public CargoDtoCreateMapper(ModelMapper modelMapper){
         this.modelMapper = modelMapper;
     }
 
